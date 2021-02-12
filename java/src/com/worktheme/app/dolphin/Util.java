@@ -41,8 +41,8 @@ public class Util {
 		System.out.println(newToken());
 	}
 //	public static void sendSignupEmail (String to, String token, String name, String domain) {
-//		final String username = "no.reply.hxg4u56@gmail.com";
-//		final String password = "noreply576";
+//		final String username = "no.reply.******@gmail.com";
+//		final String password = "************";
 //
 //		Properties props = new Properties();
 //		props.put("mail.smtp.auth", "true");
@@ -59,7 +59,7 @@ public class Util {
 //		try {
 //
 //			Message message = new MimeMessage(session);
-//			message.setFrom(new InternetAddress("no.reply.hXg4U56@gmail.com"));
+//			message.setFrom(new InternetAddress("no.reply.*******@gmail.com"));
 //			message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(to));
 //			message.setSubject("Please verify your signup");
 //			message.setText("Dear " + name + ","
