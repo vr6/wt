@@ -1,0 +1,19 @@
+<br/><br/>
+
+	<div class="wrap">
+		<div style="text-align: center;font-size: 14pt;">Select Log File</div>
+		<br/>
+		<form role="form" name="form1" id="form1">
+		  <div class="form-group"> 
+			<label class="form-control" style="color: #888; cursor: pointer;">
+			    <span id="filename">Select a log file</span>
+			    <input id="logfile" type="file" style="display: none;" 
+			    onchange="document.getElementById('filename').innerText=this.value;">
+			</label>
+		  </div>
+		  <button class="btn btn-default" type="submit" id="btnsubmit" ng-click="addnode()" ng-disabled="form1.$invalid">Submit</button>
+		</form>
+		  <p>{{msgtxt}}</p>
+		  <p ng-show="loading"><span>Processing. Please wait ...</span>
+		  <img src="img/refresh.gif" width=20 height=20></p>
+	</div>

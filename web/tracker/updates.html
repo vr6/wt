@@ -1,0 +1,56 @@
+<div class="viewmain">
+        <span style="font-size:20px;">Updates for the Maintained Series</span>&nbsp;&nbsp;
+        <img ng-show="msloaded" src="img/refresh.png" width="25" ng-click="loadmseries(sortcol, sortdir)" style="cursor: pointer;padding-bottom:4px;">
+        <img ng-hide="msloaded" src="img/refresh.gif" width="25" style="padding-bottom:4px;">
+
+        <style type="text/css">
+        #mtbl th {cursor: pointer;}
+        </style>
+        <p><br>
+        <table width="540" class="stable" id="mtbl">
+            <tr>
+                <th ng-click="setsort('user')" ng-style="{'background-color': sortclr('user')}">Update By</th>
+                <th ng-click="setsort('id')" ng-style="{'background-color': sortclr('id')}">Series</th>
+                <th ng-click="setsort('rec')" ng-style="{'background-color': sortclr('rec')}" style="color: #880">Received</th>
+                <th ng-click="setsort('rfe')" ng-style="{'background-color': sortclr('rfe')}" style="color: #606">RFE Req</th>
+                <th ng-click="setsort('rrr')" ng-style="{'background-color': sortclr('rrr')}" style="color: #840">RFE Resp</th>
+                <th ng-click="setsort('app')" ng-style="{'background-color': sortclr('app')}" style="color: #080">Approved</th>
+                <th ng-click="setsort('dnm')" ng-style="{'background-color': sortclr('dnm')}">Decision</th>
+                <th style="color: #00f">Changes</th>
+                <th ng-click="setsort('dt')" ng-style="{'background-color': sortclr('dt')}">Updated (ago)</th>
+            </tr>
+            <tr bgcolor="#ffe" style="font-weight: bold;">
+                <td>Totals</td>
+                <td>{{ mstats.length }}</td>
+                <td>{{ mstot.rec }}</td>
+                <td>{{ mstot.rfe }}</td>
+                <td>{{ mstot.rrr }}</td>
+                <td>{{ mstot.app }}</td>
+                <td>{{ mstot.dnm }}</td>
+<!--                 <td>{{ mstot.chg }}</td> -->
+                <td>&nbsp;</td>
+                <td>-</td>
+            </tr>
+            <tr ng-repeat="st in mstats"
+                ng-style="{'background-color': st.chguser.startsWith('*') ? '#aff' : ''}"
+            >
+                <td>{{ st.chguser }}</td>
+                <td>{{ st.id }}</td>
+                <td style="color: #880">{{ st.rec }}</td>
+                <td style="color: #606">{{ st.rfe }}</td>
+                <td style="color: #840">{{ st.rrr }}</td>
+                <td style="color: #080">{{ st.app }}</td>
+                <td>{{ st.dnm }}</td>
+                <td style="color: #00f">{{ st.chgs == '' ? 0 : st.chgs.split(',').length }}</td>
+                <td title ="{{ st.chgdt }} GMT">{{ st.chgdt | timeago }}</td>
+            </tr>
+        </table>
+<!--                 <div ng-class="mseries.indexOf('WAC16'+(125+n) + (50+k)) == -1 ? 's' : 's2'" 
+                    ng-repeat="k in [] | range:wac[n]">
+                    <a ng-click="getvcase('WAC16'+(125+n) + (50+k))">{{50 + k}}</a><span style="color: red" ng-show="changes['WAC16'+(125+n) + (50+k)]">*</span>
+                </div> -->
+
+</div>
+       <p><br>
+       <p><br>
+       	

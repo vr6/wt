@@ -1,0 +1,28 @@
+<div class="viewmain">
+        <span style="font-size:20px;">RFE Resp Received -> Approved/Denied</span><br>
+        <span style="font-size:14px;">Across the maintained series since 2016-11-24</span>
+        <p><br>
+        <style type="text/css">
+        #mtbl th {cursor: pointer;}
+        </style>
+        <table width="30" class="stable" id="mtbl">
+            <tr>
+                <th>Series</th>
+                <th style="color: #080">Approved</th>
+                <th>Decision Notice</th>
+            </tr>
+            <tr bgcolor="#ffe" style="font-weight: bold;">
+                <td>Totals</td>
+                <td style="color: #080">{{ reptot.app }}</td>
+                <td>{{ reptot.dnm }}</td>
+            </tr>
+            <tr ng-repeat="st in rep">
+                <td>{{ st.id }}</td>
+                <td style="color: #080">{{ st.app }}</td>
+                <td>{{ st.dnm }}</td>
+            </tr>
+        </table>
+</div>
+       <p><br>
+       <p><br>
+       	

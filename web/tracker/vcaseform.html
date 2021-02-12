@@ -1,0 +1,35 @@
+  <style type="text/css">
+    #tbl td {width: 10px; height: 10px;font-family: 'arial narrow'; font-size:10px; text-align: center;}
+  </style>
+<br>
+<p><span style="font-size:22px;" >{{vcase.id}}***</b>&nbsp;&nbsp;</span>{{vcase.dt}}
+<!-- <span ng-click="uploadfile(vcase.id)" style="font-size:12px; margin-left: 10px; cursor: pointer;color: blue;">Upload file</span>
+ --><table id="tbl" border="1" cellspacing="0">
+  <tr>
+    <td></td>
+    <td ng-repeat="n in [] | range:100">{{n%10 == 0? n/10 : n%5 == 0? '*' : ''}}</td>
+  </tr>
+  <tr ng-repeat="n in [] | range:10">
+    <td>{{n}}</td>
+    <td 
+        ng-repeat="k in [] | range:100" 
+        title="{{vcase.id + n + (k < 10 ? '0' + k : k)}}"
+        ng-style="{'background-color': getColor(res[n*100 + k]) }"></td>
+  </tr>
+</table>
+<a style="font-size: 10pt;" ng-click="getvcase(vcase.id, 'prev')">[ prev dt ]</a>&nbsp;&nbsp;&nbsp;
+<a style="font-size: 10pt;" ng-click="getvcase(vcase.id, 'next')">[ next dt ]</a>&nbsp;&nbsp;&nbsp;
+
+<style type="text/css">
+  #clrtbl td {padding-right: 6px;}
+</style>
+<br>
+<div id="barchart_values" style="width: 600px; height: 160px;"></div>
+
+<b>How to use this</b><br>
+For example, if the case number has last 3 digits as 805, then you should look at row numbered "8" and column "05".
+<br><span style="font-size: 12px;">******* All modifications are turned off for users for now. *******</span><br>
+<hr>
+
+<!--         ng-click="open('sm', vcase.id + n + (k < 10 ? '0' + k : k))"
+-->

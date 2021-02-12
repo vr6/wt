@@ -1,0 +1,326 @@
+<div class="viewmain">
+
+<div class="wrapmsg fade in" ng-show="signupalert">
+  <button type="button" class="close" data-dismiss="alert" aria-label="Close" ng-click="signupalert=false">
+    <span aria-hidden="true">&times;</span>
+  </button>
+  <strong>Signup Successful!</strong>&nbsp;&nbsp;&nbsp;You can now Login.
+</div>
+ 
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<script>
+  (adsbygoogle = window.adsbygoogle || []).push({
+    google_ad_client: "ca-pub-8246396333445741",
+    enable_page_level_ads: true
+  });
+</script>
+
+    <h3>H-1B Case Status - 2017 (Applied in 2016)</h3>
+<!--     <p style="font-size: 13px;color: #00f">Updated on <b>{{update}}</b></p>
+ -->
+<!--             <p><br>
+            <div class="wrapmsg">
+            <b style="font-size: 18px;">New!!</b><br>
+            <li>Added a stats table for the maintained series</li>
+            <li>More and more series are updated to show all the statuses, thanks to volunteers!</li>
+            </div> -->
+    <p><br>The purpose of this page is to provide better and broader visibility into the status and processing of visa cases, because USCIS provides status for only one case at a time.
+
+    <p>The status data on this page is maintained by volunteer admins. Anyone can update status for any series. If you are interested in updating data, please create a user account and post a comment. A token and instructions will be sent to your email Id.
+
+    <p><b>Disclaimer:</b> While efforts are made to ensure the accuracy of the data on this website, the website is not responsible for any possible descrepancy in the data or any impact arising out of it. 
+<!--
+    </p><br>
+    <style type="text/css">
+    #changetbl td,th {text-align: center; width:100px;}
+    </style>
+
+    <div ng-controller="progressCtrl" >
+        <h3>Total Cases vs Time</h3>
+        <table>
+            <tr>
+                <td><div id="rec" class="progress2"></div></td>
+                <td><div id="app" class="progress2"></div></td>
+            </tr>
+        </table>
+    </div>
+-->
+<p><br>
+    <div id="wrapper" style="overflow: hidden;" ng-controller="vcaselistCtrl">
+        <span style="font-size:20px;" >Case Series vs Current Status</span><a style="font-size: 10pt;margin-left: 40px;" href="#/history" target="_blank">archives</a>
+        <p>
+            <div style="width: 650px; height: 220px;">
+                <div style="background-color: #777;color:white;padding-left: 10px;">EAC</div>
+                <canvas id="canvas_eac" style="background-color: #555;"></canvas>
+            </div><p><br>&nbsp;
+        <div style="width: 650px;background-color: #555;">
+            <div style="width: 520px; height: 220px;">
+                <div style="width: 650px;background-color: #777;color:white;padding-left: 10px;">WAC</div>
+                <canvas id="canvas_wac" style="background-color: #555;"></canvas>
+            </div>
+            <p><br>
+        </div>
+
+<!--         <div id="columnchart_eac" style="width: 660px; height: 200px;background-color: #555"></div> -->
+<!--         <div id="columnchart_wac" style="width: 660px; height: 200px;background-color: #555"></div> -->
+
+        <style type="text/css">
+        #mtbl tr td {
+/*            height: 6px;
+            font-size: 11px;*/
+            padding: 3px 8px 2px 6px;
+        }
+        </style>
+        <p>&nbsp;<br>
+        <span style="font-size:20px;">Live Updates</span>&nbsp;&nbsp;
+        <img ng-show="msloaded" src="tracker/img/refresh.png" width="25" ng-click="loadmseries(sortcol, sortdir)" style="cursor: pointer;padding-bottom:4px;">
+        <img ng-hide="msloaded" src="tracker/img/refresh.gif" width="25" style="padding-bottom:4px;">
+        <p> Showing 50 of {{ mstats.length }}. For the full list, see REPORTS > Current Stats.
+        <style type="text/css">
+        #mtbl th {cursor: pointer;}
+        </style>
+        <table width="600" class="stable" id="mtbl">
+            <tr>
+                <th ng-click="setsort('user')" ng-style="{'background-color': sortclr('user')}">Update By</th>
+                <th ng-click="setsort('id')" ng-style="{'background-color': sortclr('id')}">Series</th>
+                <th ng-click="setsort('rec')" ng-style="{'background-color': sortclr('rec')}" style="color: #880">Received</th>
+                <th ng-click="setsort('rfe')" ng-style="{'background-color': sortclr('rfe')}" style="color: #606">RFE Req</th>
+                <th ng-click="setsort('rrr')" ng-style="{'background-color': sortclr('rrr')}" style="color: #840">RFE Resp</th>
+<!--                 <th ng-click="setsort('app')" ng-style="{'background-color': sortclr('app')}" style="color: #080">Approved</th> -->
+                <th ng-click="setsort('dnm')" ng-style="{'background-color': sortclr('dnm'), 'border-right':'1px solid #aaa'}">Decision</th>
+                <th>days</th>
+                <th style="color: #00f">changes</th>
+                <th style="color: #00f">rfe</th>
+                <th style="color: #00f">resp</th>
+                <th style="color: #00f">dnm</th>
+                <th style="color: #00f">app1</th>
+                <th style="color: #00f">app2</th>
+                <th ng-click="setsort('dt')" ng-style="{'background-color': sortclr('dt')}">Updated</th>
+            </tr>
+            <tr bgcolor="#ffe" style="font-weight: bold;">
+                <td>Totals</td>
+                <td>{{ mstats.length }}</td>
+                <td>{{ mstot.rec }}</td>
+                <td>{{ mstot.rfe }}</td>
+                <td>{{ mstot.rrr }}</td>
+<!--                 <td>{{ mstot.app }}</td> -->
+                <td style="border-right: 1px solid #aaa;">{{ mstot.dnm }}</td>
+<!--                 <td>{{ mstot.chg }}</td> -->
+                <td>today&nbsp;&nbsp;&gt;</td>
+                <td style="background-color: #fe8">{{cfdtstat[0]}}</td>
+                <td style="background-color: #fe8">{{cfdtstat[1]}}</td>
+                <td style="background-color: #fe8">{{cfdtstat[2]}}</td>
+                <td style="background-color: #fe8">{{cfdtstat[3]}}</td>
+                <td style="background-color: #fe8">{{cfdtstat[4]}}</td>
+                <td style="background-color: #fe8">{{cfdtstat[5]}}</td>
+                <td>&nbsp;</td>
+            </tr>
+            <tr ng-repeat="st in mstats | limitTo: 60"
+                ng-style="{'background-color': st.chguser.startsWith('*') ? '#aff' : '', 'border-top':st.cdt ? '3px solid #e84': ''}"
+            >
+                <td>{{ st.chguser }}</td>
+                <td><span ng-click="getvcase(st.id, null, null, true);" style="color: #66c;cursor: pointer;">{{ st.id }}</span></td>
+                <td style="color: #880">{{ st.rec }}</td>
+                <td style="color: #606">{{ st.rfe }}</td>
+                <td style="color: #840">{{ st.rrr }}</td>
+<!--                 <td style="color: #080">{{ st.app }}</td> -->
+                <td style="border-right: 1px solid #aaa;">{{ st.dnm }}</td>
+                <td>{{ st.nhours/24 | round }}</td>
+                <td style="color: #00f">{{ st.chgs == '' ? 0 : st.chgs.split(',').length }}</td>
+                <td style="color: #00f">{{ st.tchgs.crfe }}</td>
+                <td style="color: #00f">{{ st.tchgs.cresp }}</td>
+                <td style="color: #00f">{{ st.tchgs.cdnm }}</td>
+                <td style="color: #00f">{{ st.tchgs.app1 }}</td>
+                <td style="color: #00f">{{ st.tchgs.app2 }}</td>
+                <td title ="{{ st.chgdt }} GMT">{{ st.chgdt | timeago }}</td>
+            </tr>
+        </table>
+<!--                 <div ng-class="mseries.indexOf('WAC16'+(125+n) + (50+k)) == -1 ? 's' : 's2'" 
+                    ng-repeat="k in [] | range:wac[n]">
+                    <a ng-click="getvcase('WAC16'+(125+n) + (50+k))">{{50 + k}}</a><span style="color: red" ng-show="changes['WAC16'+(125+n) + (50+k)]">*</span>
+                </div> -->
+
+       <p><br>
+        <h3>Series 138-149 (EAC16 &amp; WAC16)</h3>
+        <table id="seriestbl" border=1 cellspacing=0>
+            <tr><!-- <td></td><td>EAC16</td><td>WAC16</td>
+            <td rowspan="14">&nbsp;&nbsp;&nbsp;&nbsp;</td> -->
+            <td></td><td>EAC16</td><td rowspan="14">&nbsp;&nbsp;&nbsp;&nbsp;</td><td></td><td>WAC16</td></tr>
+            <tr ng-repeat="n in [] | range:12">
+<!--             <td class='cd'>{{125 + n}}</td>
+            <td>
+                <div class="s"
+                    ng-style="{'background-color': getMsbg( 'EAC16'+(125+n) + (50+k) )}"
+                    ng-repeat="k in [] | range:eac[n]">
+                    <a ng-click="getvcase('EAC16'+(125+n) + (50+k))">{{50 + k}}</a><span style="color: red" ng-show="changes['EAC16'+(125+n) + (50+k)]">*</span>
+                </div>
+            </td>
+            <td>
+                <div class="s"
+                    ng-style="{'background-color': getMsbg( 'WAC16'+(125+n) + (50+k) )}"
+                    ng-repeat="k in [] | range:wac[n]">
+                    <a ng-click="getvcase('WAC16'+(125+n) + (50+k))">{{50 + k}}</a><span style="color: red" ng-show="changes['WAC16'+(125+n) + (50+k)]">*</span>
+                </div>
+            </td> -->
+            <td class='cd'>{{138 + n}}</td>
+            <td>
+                <div class="s"
+                    ng-style="{'background-color': getMsbg( 'EAC16'+(138+n) + (50+k) )}"
+                    ng-click="getvcase('EAC16'+(138+n) + (50+k), null, null, true)"
+                    ng-repeat="k in [] | range:eac[n+13]">
+                    <span>{{50 + k}}</span><span style="color: red" ng-show="changes['EAC16'+(138+n) + (50+k)]">*</span>
+                </div>
+            </td>
+            <td class='cd'>{{138 + n}}</td>
+            <td>
+                <div class="s"
+                    ng-style="{'background-color': getMsbg( 'WAC16'+(138+n) + (50+k) )}"
+                    ng-click="getvcase('WAC16'+(138+n) + (50+k))"
+                    ng-repeat="k in [] | range:wac[n+13]">
+                    <span>{{50 + k}}</span><span style="color: red" ng-show="changes['WAC16'+(138+n) + (50+k)]">*</span>
+                </div>
+            </td>
+            </tr>
+        </table>
+        <b>Notes</b><br>
+        <ul>
+        <li>Click on a series to display status for all cases for that series, in the grid below</li>
+        <li>The <span style="color: red;">*</span> next to the series number means there were changed cases in last update</li>
+        <li>All the series are being maintained by volunteer admins.</li>
+        <li>Color coding for recency of updates (in GMT): 
+        <div style="display: inline;" id="seriesgrid">
+        <div class="cc" style="background-color: #ccffff">...</div>
+        <div class="cc" style="background-color: #bbf8bb">today</div>
+        <div class="cc" style="background-color: #f6faaa">y'day</div>
+        <div class="cc" style="background-color: #ffddaa">2d</div>
+        <div class="cc" style="background-color: #ffc8e0">3d</div>
+        <div class="cc" style="background-color: #dce4ff">4d</div>
+        </div>
+        </li>
+        </ul>
+
+        <p><br>
+        <div ng-hide="vcaseid == null || res == null">
+            <p>
+             <span ng-style="{'background-color':getMsbg( vcase.id ), 'border':'1px solid #888', 'border-radius':'50%'}"> 
+            &nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;&nbsp;
+            <span style="font-size:20px;">{{vcase.id}}</b>&nbsp;&nbsp;</span>{{vcase.dt}}
+            &nbsp;&nbsp;<a style="font-size: 10pt;" ng-click="getvcase(vcase.id, 'prev', vcase.chgdt)">[ prev dt ]</a>
+            &nbsp;&nbsp;<a style="font-size: 10pt;" ng-click="getvcase(vcase.id, 'next', vcase.chgdt)">[ next dt ]</a>&nbsp;&nbsp;&nbsp;
+            <span style="font-size:14px;" ng-hide="changes[vcase.id] == null">Update : {{vcase.chgdt | timeago }} ago by <span style="color:#00a;">{{vcase.chguser}}</span></span>
+            &nbsp;&nbsp;<span style="background-color: #aff;font-size: 10pt;" ng-show="vcase.chguser.startsWith('*')">&nbsp;IN PROGRESS&nbsp;</span>
+            <table id="tbl" border="1" cellspacing="0">
+              <tr>
+                <td></td>
+                <td ng-repeat="n in [] | range:100">{{n%10 == 0? n/10 : n%5 == 0? '*' : ''}}</td>
+              </tr>
+              <tr ng-repeat="n in [] | range:10">
+                <td>{{n}}</td>
+                <td 
+                    ng-repeat="k in [] | range:100" 
+                    ng-click="history(vcase.id + n + (k < 10 ? '0' + k : k))"
+                    title="{{vcase.id + n + (k < 10 ? '0' + k : k)}}"
+                    ng-style="{'background-color': getColor(res[n*100 + k]), 'border': getBorder(vcase.id, (n*100 + k))}"
+                    ></td>
+              </tr>
+            </table>
+            <div style="border: 1px solid #ccc">
+                Received: <span style="color: blue">{{sdetail[0]}}</span>&nbsp;&nbsp;&nbsp;
+                RFE Req Mailed: <span style="color: blue">{{sdetail[3]}}</span>&nbsp;&nbsp;&nbsp;
+                RFE Resp Recv.: <span style="color: blue">{{sdetail[7]}}</span>&nbsp;&nbsp;&nbsp;
+                Other Status: <span style="color: blue">{{sdetail[4]}}</span>&nbsp;&nbsp;&nbsp;
+                Decision Notice: <span style="color: blue">{{sdetail[8]}}</span>&nbsp;&nbsp;&nbsp;
+                Approved: <span style="color: blue">{{sdetail[1]}}</span>&nbsp;&nbsp;&nbsp;
+            </div>
+            <b>Notes</b><br>
+            <ul>
+            <li>For example, if the case number has last 3 digits as 805, then you should look at row numbered "8" and column "05".</li>
+            <li>You can see full case number for a cell by hovering the mouse over that cell.</li>
+            <li>You can also click on a cell and see the change history for that case. Please note that the history is available only starting from 2016-09-03.</li>
+            </ul>
+<!-- 
+            <p>
+            <span style="font-size:20px;">Approval Paths</b>&nbsp;&nbsp;</span><span style="color: #00f;">Direct: {{pathdir}}, &nbsp;&nbsp;via RFE: {{pathrfe}}, &nbsp;&nbsp;via Other: {{pathoth}}, &nbsp;&nbsp;unknown: {{pathunk}}</span>
+            <table id="tbl" border="1" cellspacing="0">
+              <tr>
+                <td></td>
+                <td ng-repeat="n in [] | range:100">{{n%10 == 0? n/10 : n%5 == 0? '*' : ''}}</td>
+              </tr>
+              <tr ng-repeat="n in [] | range:10" style="height: 20px;">
+                <td>{{n}}</td>
+                <td
+                    ng-repeat="k in [] | range:100" 
+                    ng-click="history(vcase.id + n + (k < 10 ? '0' + k : k))"
+                    title="{{vcase.id + n + (k < 10 ? '0' + k : k)}}"
+                    ng-class="getClz(paths[n*100 + k])"
+                    ></td>
+              </tr>
+            </table>
+ -->
+<!--         <p><br>
+            <style type="text/css">
+              #clrtbl td {padding-right: 6px;}
+            </style>
+            <h3>Summary for the Selected Series</h3>
+            <div id="barchart_values" style="width: 720px; height: 250px; "></div> -->
+        </div>
+<!--         <div>
+            </p><br>
+            <h3>Series Progress</h3>
+            <div id="schart" class="progress2"></div>
+        </div> -->
+<!--         <p><br>
+        <h3>Series 150-199 (EAC16)</h3>
+        <table class="stable">
+            <tr>
+                <th style="text-align: center;border-right:1px solid #aaa;">50</th>
+                <th style="text-align: center;border-right:1px solid #aaa;width:180px;">51</th>
+                <th style="text-align: center;border-right:1px solid #aaa;">52</th>
+                <th style="text-align: center;border-right:1px solid #aaa;">53</th></tr>
+            <tr>
+                <td valign="top" ng-repeat="sb in sbs" style="white-space: normal;background-color: white;border-right:1px solid #aaa;">
+                    <div style="display: inline-block;text-align: center;width: 40px;cursor: pointer;"
+                        ng-repeat="k in sb"
+                        ng-style="{'background-color': getMsbg('EAC16'+ k + ($parent.$index + 50))}"
+                        ng-click="getvcase('EAC16'+ k + ($parent.$index + 50))"
+                        >
+                        <span>{{k}}</span>
+                    </div>
+                </td>
+            </tr>
+        </table> -->
+<!--         <p><br>
+        <h3>Additional Series</h3>
+        <table class="stable" width="100%" style="height: 60px;">
+            <tr>
+                <td valign="top">
+                    <div style="display: inline-block;text-align: center;width: 100px;cursor: pointer;"
+                        ng-style="{'background-color': getMsbg('EAC1704651')}"
+                        ng-click="getvcase('EAC1704651')"
+                        ><span>EAC1704651</span>
+                    </div>
+                </td>
+            </tr>
+        </table>         -->
+        <p><br>
+        <span style="font-size:20px;">Credits</span><br>
+        <p>We are a group of volunteers bringing you these data updates everyday. Some of us are not in IT and never ran a script before. But that didn't stop us from lending a helping hand in fetching data.
+        <table width="560" class="stable" id="mtbl">
+            <tr>
+                <th>Data Contributors</th>
+            </tr>
+            <tr>
+                <td style="white-space: normal;background-color: white;"><div class="cbadge" ng-repeat="a in admins">{{ a.name }}
+                </div></td>
+            </tr>
+        </table>
+            <hr>
+    </div>
+</div>
+<div style="background-color: #dfdddc;color:#000;">
+    <div class="viewmain">
+    <cmtvcase topic=2></cmtvcase>
+    </div>
+</div>
+    <a id="bottom"></a> &nbsp;
+

@@ -1,0 +1,110 @@
+<div class="viewmain">
+    <h3>H-1B Interview Experiences</h3><br>
+    <p>Visa interview experiences are collected on this page, to help the folks that are attending interviews.
+    <p><br>
+
+        <div style="max-width: 600px; margin-bottom: 5px;font-size: 16px;" >
+        <span ng-hide="fltrmode">Share your experience</span>
+<!--         <span ng-show="fltrmode">Search posts</span>
+        <span style="margin-left: 20px;font-size: 10pt;">
+        <a ng-hide="fltrmode" ng-click="showfltr(true)">Search Posts</a>
+        <a ng-show="fltrmode" ng-click="showfltr(false)">Share your experience</a>&nbsp;&nbsp;
+        <a ng-show="fltrdata" ng-click="clearfltr()">Clear Filter</a>
+        </span> -->
+        </div>
+        <div class="comment" ng-hide="fltrmode" id="exp.orm" style="margin-bottom: 20px;padding: 8px;padding-top: 2px;border: 1px solid #ccc">
+            <form novalidate role="form" id="form1" name="form1">
+                <table width=100% style="border-spacing: 4px; border-collapse: separate;margin-top: 6px;margin-bottom: -4px;">
+                    <tr>
+
+                        <td colspan=2><textarea style="height: 120px;" 
+                        placeholder="Overall Experience (questions can be added separately below)"  class="form-control" ng-model="exp.txt"></textarea></td>
+                    </tr>
+                    <tr>
+                    	<td colspan=2  style="padding:4px;">
+<!--                     		<span ng-show="exp.qs.length == 0">No questions added.</span> -->
+                    		<div ng-repeat="q in exp.qs" style="padding: 2px;">
+                    			<div style="color:#a43;padding-left: 6px; padding-right: 6px; background-color: #fff; border-radius: 4px; ">{{q.qst}}</div>
+                    			<div style="color:#348;padding-left: 6px; padding-right: 6px; background-color: #fff; border-radius: 4px; ">{{q.ans}}</div>
+                    		</div>
+                    	</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <input type="text" placeholder="They asked for"  class="form-control" 
+                            ng-model="exp.qst" required style="width: 480px;display: inline;">
+                        </td>
+                        <td rowspan="2">
+                        <button class="btn btn-primary" style="width: 85px;height:102px;margin-top:-2px;display: inline;" type="submit" ng-click="addqst()" ng-disabled="!exp.qst || !exp.ans">Add<br>Question</button>                        
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <textarea style="height: 65px;" placeholder="Your response was"  class="form-control" 
+                            ng-model="exp.ans" required style="width: 480px;display: inline;"></textarea>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan=2 style="height: 5px;">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan=2>
+                            <input type="text" placeholder="Your name"  class="form-control" 
+                            ng-model="exp.name" required style="width: 140px;display: inline;">
+                            <input type="text" placeholder="Consulate"  class="form-control" 
+                            ng-model="exp.center" required style="width: 120px;display: inline;">
+                            <input type="text" placeholder="When was it?"  class="form-control" 
+                            ng-model="exp.intvdt" required style="width: 120px;display: inline;">
+	                        <select ng-model="exp.result" class="form-control" style="width: 90px;display: inline;">
+	                            <option value="">Result</option>
+	                            <option value="Success">Success</option>
+	                            <option value="221-g">221-g</option>
+	                            <option value="Other">Other</option>
+	                        </select>
+
+                        <button class="btn btn-primary" style="width: 85px;height:32px;margin-top:-2px;display: inline;" type="submit" ng-click="addexp(exp)" ng-disabled="!exp.name || !exp.center || exp.qs.length==0">Submit</button>
+                    </td>
+                    </tr>
+                </table>
+            </form>
+        </div>
+
+<p><br>
+<span style="font-size: 14px;">Showing all posts</span>
+    <div ng-hide="expset.length > 0">
+        <span>No results found. Please try changing search citeria.</span>
+    </div>
+    <div ng-show="expset.length > 0" style="width: 600px; padding-bottom: 20px;">
+		<table class="stable" width="100%">
+			<thead>
+				<tr>
+					<th>Posted By</th>
+					<th>Interview dt</th>
+					<th>Consulate</th>
+					<th>Description</th>
+					<th>Posted dt</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr ng-repeat-start="exp in expset" ng-click="showexp($index)">
+		            <td>{{exp.name}}</td>
+		            <td>{{exp.intvdt}}</td>
+		            <td>{{exp.center}}</td>
+		            <td>{{exp.txt | clip}}</td>
+		            <td>{{exp.crdt | timeago}}</td>
+				</tr>
+			    <tr ng-repeat-end id="e{{$index}}" style="display:none;">
+		            <td colspan=5 style=" background-color: #f0f8ff;padding-left: 6px;">
+		            	<div>{{exp.txt}}</div>
+                		<div ng-repeat="q in exp.qs" style="margin-top: 6px;">
+                			<div style="color:#a43;">{{q.qst}}</div>
+                			<div style="color:#348;">{{q.ans}}</div>
+                		</div>
+		            </td>
+			    </tr>
+			</tbody>
+		</table>
+	</div>
+<hr>
+ </div>

@@ -1,0 +1,35 @@
+        <div style="max-width: 600px; margin-bottom: 5px;font-size: 16px;" >Comments</div>
+        <div class="comment" id="cmtform" style="margin-bottom: 20px;">
+            <form novalidate role="form" id="form1" name="form1">
+                <table width=100% style="border-spacing: 4px; border-collapse: separate;margin-top: 6px;margin-bottom: -4px;">
+                    <tr>
+                        <td colspan=3><textarea required type="text" placeholder="Your comment"  class="form-control" ng-model="cmt.txt"></textarea></td>
+                    </tr>
+                    <tr>
+                        <td><input type="text" placeholder="Your name"  class="form-control" ng-model="cmt.name" required></td>
+                        <td align="right" width="10%"><button class="btn btn-primary" type="submit" ng-click="addcomment(cmt)" ng-disabled="form1.$invalid">Submit</button></td>
+                        <td align="right" width="10%"><button class="btn btn-default" type="reset" id="reset">Cancel</button></td>
+                    </tr>
+                </table>
+                <input type="hidden" ng-model="cmt.topic" value="{{cmt.topic}}" ng-init="cmt.topic=1"/>
+            </form>
+        </div>
+        <div ng-show="cset.cmts.length > 0" style="padding-bottom: 20px;">
+            <div style="max-width: 600px; font-size: 14px;margin-bottom: 10px;">Showing {{(page-1)*sz}} - {{(page-1)*sz + cset.cmts.length}} (of {{cset.total}})&nbsp;&nbsp;&nbsp;
+                <div style="font-size: 13px;display: inline;">
+                    <a ng-show="page < (cset.total/sz)" ng-click="loadcomments(page+1)">Older&nbsp;</a>
+                    <a ng-show="page > 1" ng-click="loadcomments(page-1)">Recent</a>
+                </div>
+            </div>
+            <div ng-repeat="c in cset.cmts" ng-class="c.type == 1 ? 'comment2' : 'comment'">
+                <table width=100%>
+                  <tr>
+                    <td style="font-size: 15px;color: #06e; font-style: bold;">{{ c.name }}</td>
+                    <td align="right" style="color:#842; font-size: 12px;">{{ c.cmt_dt.split(' ')[0] }}</td>
+                  </tr>
+                  <tr>
+                    <td colspan="2" style="font-size: 13px;">{{ c.txt }}</td>
+                  </tr>
+                </table>
+            </div>
+        </div>

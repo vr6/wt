@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Worktheme - H1B Status, H1B tracker, Jobs, Job Search, Job postings, H1B Processing, H1B News</title>
+    <meta name="description" content="Provides forums and data for h1b Status, h1b tracker, Jobs, Job Search, Job postings, H1B processing, H1B Status"/>
+
+    <script src="lib/angular1.5.min.js"></script>
+    <script src="lib/angular-route.js"></script>
+    <script src="lib/angular-animate.min.js"></script>
+    <script src="lib/ui-bootstrap-tpls-2.0.1.min.js"></script>
+
+    <link rel="stylesheet" href="lib/bootstrap.custom.min.css">
+    <link rel="stylesheet" href="css/tracker.css">
+
+<!--     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script> -->
+    <script type="text/javascript" src="lib/loader.js"></script>
+    <script src="js/stats.min.js"></script>
+
+</head>
+<body ng-app="statsApp">
+    <div ng-controller="indexCtrl">
+        <div ng-include="'pubnav.html'"></div>
+        <div ng-view class="view-frame"></div>
+    </div>
+    <script src="lib/jquery-1.12.4.min.js"></script>
+    <script src="lib/bootstrap-3.3.7.min.js"></script>
+</body>
+</html>
