@@ -1,0 +1,37 @@
+.phone {
+/*        background-color: black;*/
+border-radius: 6px;
+border: 2px solid #888;
+padding: 20px;
+width: 300px;
+height: 450px;
+text-align: left;
+background: -webkit-linear-gradient(#444, #222); /* For Safari 5.1 to 6.0 */
+background: -o-linear-gradient(#444, #222); /* For Opera 11.1 to 12.0 */
+background: -moz-linear-gradient(#444, #222); /* For Firefox 3.6 to 15 */
+background: linear-gradient(#444, #222); /* Standard syntax */
+
+}
+.icon {
+    margin: 12px;
+    border: 1px solid #888;
+    background-color: #2a2a2a;
+    height:58px;
+    width:58px;
+    border-radius: 6px;
+    color:#f80;
+    font-size: 40px;
+    text-align: center;
+}
+.app {
+    display: inline-block;
+    cursor: pointer;
+    font-family: 'Source Sans Pro', sans-serif;
+}
+.appname {
+    margin-left: 12px;
+    width:58px;
+    color:#aaa;
+    font-size: 18px;
+    text-align: center;
+}

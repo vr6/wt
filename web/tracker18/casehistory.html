@@ -1,0 +1,25 @@
+	<div class="modal-header">
+	    <b class="modal-title" style="font-size: 16px;">{{casenum}}</b>
+	</div>
+	<div class="modal-body">
+		<div ng-hide="chgloaded">
+			<span>Please wait ... </span><img src="img/refresh.gif" width=20>
+		</div>
+		<table class="stable" style="width: 250px;" ng-show="chgloaded">
+			<tr>
+				<th style="text-align: left;">Change</th>
+				<th style="text-align: left;">Date</th>
+			</tr>
+			<tr>
+<!--			<tr ng-repeat="row in casehist">
+ 				<td>{{getStatus(row.st)}}</th>
+				<td>{{row.dt}}</td>
+
+ -->				<td colspan=2><IMG ng-if="chgloaded" ng-src="{{imgdata}}"></td>
+			</tr>
+		</table>
+	</div>
+	<div class="modal-footer">
+	    <button class="btn btn-primary" type="button" ng-click="cancel()">OK</button>
+	</div>
+

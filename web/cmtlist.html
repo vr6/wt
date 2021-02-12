@@ -1,0 +1,181 @@
+
+<script id="CmtFormTpl" type="text/template">
+
+<!--========== POST / SEARCH LINKS =========-->
+  <div style="max-width: 600px; margin-bottom: 5px;">
+  <span style="font-size: 16px;">Post Message</span>&nbsp;&nbsp;&nbsp;&nbsp;
+  {{^pagereset}}
+  <img src="img/refresh.png" width="25" onclick="resetcmts()" style="cursor: pointer;">
+  {{/pagereset}}
+  {{#pagereset}}
+  <img src="img/refresh.gif" width="25">
+  {{/pagereset}}
+
+<!-- <br><span style="color: #a00">(Note: To reset page navigation or search filter, please click on refresh icon above)<br>&nbsp;</span>
+ -->
+  <div class="comment" style="margin-bottom: 20px;padding: 8px;padding-top: 2px;">
+
+<!--========== COMMENT FORM =========-->
+    <form novalidate role="form" id="form2" name="form2">
+    <table width=100% style="border-spacing: 4px; border-collapse: separate;margin-top: 6px;">
+
+      {{#qtxt}}
+      <tr id="qtxtdiv">
+        <td width="100%" style="padding: 8px; border: 1px solid #ccc;border-radius: 4px; background-color: #e6f0f8; ">
+        <code><span style="color: blue;font-weight: bold;">{{qname}}: </span>{{qtxt}}
+        </td>
+        <td align="center" style="padding: 8px; border: 1px solid #ccc;background-color: #e6f0f8; border-radius: 4px;">
+         <span style="color:#c40;cursor: pointer;" onclick="closeqtxt()">close</span></code>
+        </td>
+      </tr>
+      {{/qtxt}}
+<!-- =========== -->
+      <tr>
+        <td width="100%">
+          <textarea id="cmtbox" style="height:80px;width:100%;font-family: Consolas,monaco,Lucida Console,Lucida Sans Typewriter,Bitstream Vera Sans Mono; font-size: 13px;" onkeyup="ontyping()" required type="text" placeholder="Your message" class="form-control"></textarea>
+        </td>
+        <td>
+          <button type="button" class="btn btn-primary" style="width: 50px;height:80px;margin-top:-2px;display: inline;" onclick="addcomment()">Go</button>
+        </td>
+      </tr>
+<!-- =========== -->
+      <tr>
+        <td colspan=2><img id="emoji" src="img/sm2.png" width="18" height="18" style="margin-left: 10px;"></img>
+          <div class="pop" id="epop">
+          <span>🙂</span><span>😃</span><span>😉</span><span>😎</span><span>😜</span><span>🤔</span><br>
+          <span>😐</span><span>🙄</span><span>😳</span><span>😔</span><span>😮</span><span>😴</span><br>
+          <span>🙁</span><span>😥</span><span>😱</span><span>😫</span><span>😠</span><span>😡</span><br>
+          <span>👍</span><span>👌</span><span>👏</span><span>🙏</span><span>✌</span><span>🖐</span><br>
+          <span>🏆</span><span>💥</span><span>⭐</span><span>⚡</span><span>💡</span><span>🍺</span>
+          </div>&nbsp;&nbsp;
+        <div id="userlen" style="margin-right: 10px;display: inline;font-size:12px; color: #888;"></div>
+        <div id="utyping" style="display: inline;font-size:12px; color: #e06f00;"></div>
+        </td>
+      </tr>    
+<!-- =========== -->
+    </table>
+    </form>
+
+<!--========== UINFO PANEL / FORM =========-->
+    {{^uinfoedit}}
+    <div style="margin-top:6px; padding: 10px; background-color: #e6f0f8; border:1px solid #ccc;border-radius: 6px;" 
+      ng-hide="uinfoedit || topic != 2">
+      <div class="userinfo"><span style="color:#840">Name:</span> {{uinfo.name}}</div>
+      <div class="userinfo"><span style="color:#840">Status:</span> {{getstatusopts2}}</div>
+      <div class="userinfo"><span style="color:#840">Series:</span> {{uinfo.series}}</div>
+        <span style="color:#04c;cursor: pointer;margin-left: 12px;" onclick="edituinfo()">edit</span>
+    </div>
+    {{/uinfoedit}}
+    {{#uinfoedit}}
+    <form novalidate role="form" id="form2" name="form2" style="padding: 8px; background-color: #e6f0f8; border:1px solid #ccc;border-radius: 6px;" ng-show="uinfoedit">
+      <div ng-if="topic==2" style="display: inline;">
+        <input type="text" placeholder="Your name" class="form-control" 
+          value="{{uinfo.name}}" id="unamebox" required style="width: 140px;display: inline;">
+        <select class="form-control" id="ustatusbox" style="width: 160px;display: inline;">
+          <option value="">Current status</option>
+          <option value="1">RFE</option>
+          <option value="2">RFE Resp Sent</option>
+          <option value="3">Received</option>
+          <option value="4">Approved</option>
+          <option value="5">Name Was Updated</option>
+          <option value="6">Other</option>
+        </select>
+        <input type="text" id="useriesbox" placeholder="Series" class="form-control" 
+        value="{{uinfo.series}}" style="width: 100px;display: inline;">
+        <button class="btn btn-primary" type="submit" onclick="saveuinfo()">Save</button>
+        <button class="btn btn-default" type="button" onclick="canceluinfo()">Cancel</button>
+      </div>
+    </form>
+    {{/uinfoedit}}
+<!--========== END UINFO PANEL =========-->
+  </div>
+</script>
+
+
+<!--========== COMMENT LIST =========-->
+<script id="CmtListBodyTpl" type="text/template">
+  <div style="max-width: 600px; padding-bottom: 20px;">
+
+<!-- =========== -->
+    <table width=100% style="margin-bottom: 10px;">
+      <tr>
+        <td style="font-size: 14px;" width=160>
+          Msgs: <span style="font-size: 12px;color:#444;">{{getval.pgof}}</span>
+        </td>
+<!--         <td width=50>
+          {{#cmtloaded}}
+          <img src="img/refresh.png" width="25" onclick="resetcmts()" style="cursor: pointer;">
+          {{/cmtloaded}}
+          {{^cmtloaded}}<img src="img/refresh.gif" width="25">{{/cmtloaded}}
+        </td>
+ -->        <td width=180><input id="fltrbox" type="text" value="{{filter}}" style="width:110px;height: 25px; display: inline; background-color: #f8f8f8" class="form-control"></input>&nbsp;<a onclick="filtercmts()">Search</a>
+        </td>
+        <td align="right" style="font-size: 13px;">
+          {{#getshow.recent}}<a onclick="getrecent()">Recent</a>&nbsp;&nbsp;{{/getshow.recent}}
+          {{#getshow.older}}<a onclick="getprev()">Older</a>{{/getshow.older}}
+        </td>
+      </tr>
+    </table>
+<!-- =========== -->
+  {{^getshow.cmtlist}}
+    <span>No messages were found for the specified search keywords or for this page.</span>
+  {{/getshow.cmtlist}}
+  {{#getshow.cmtlist}}
+    {{#cset.cmts}}<div class="{{getclass.cmt}}">{{>cmtItem}}</div>{{/cset.cmts}}
+  {{/getshow.cmtlist}}
+<!-- =========== -->
+    <div style="font-size: 13px;text-align: right">
+      {{#getshow.recent}}<a onclick="getrecent()">Recent</a>&nbsp;&nbsp;{{/getshow.recent}}
+      {{#getshow.older}}<a onclick="getprev()">Older</a>{{/getshow.older}}
+    </div>
+    <p>&nbsp;<br>
+    <p>&nbsp;<br>
+<!-- =========== -->
+
+  </div>
+</script>
+
+<!--============ CMT TEMPLATE ===============-->
+<script id="CmtTpl" type="text/template">
+
+<!-- =========== -->
+  <div class="{{getclass.stbar}}">
+    <table width="100%">
+      <tr style="font-size: 12px;">
+        <td width="700" class="user"> {{ name }}&nbsp;&nbsp;&nbsp;&nbsp;
+        <span style="color:#68a;">{{ center }}{{ series }}</span>&nbsp;
+        <span style="color:#a86;">{{ getstatusopts }}</span>&nbsp;
+        </td>
+        <td width="40" align="right">
+          <span style="color:#04c;cursor: pointer;" onclick="replycmt({{cindex}})">reply</span>
+        </td>
+        <td width="90" align="right">
+          {{#getshow.rmcmt}}
+            <span style="color:#c40;cursor: pointer;" onclick="rmcmt({{cindex}})">del</span>&nbsp;&nbsp;&nbsp;
+          {{/getshow.rmcmt}}
+          {{#getshow.modcmt}}
+            <span style="color:#aaa;cursor: pointer;" onclick="modcmt({{cindex}})">mod</span>
+          {{/getshow.modcmt}}
+        </td>
+        <td width="60" align="right">
+          <span id="votes{{cindex}}">{{ votes }}</span>
+          <a onclick="upvote({{cindex}})"><img style="margin-top: -5px;" src="img/upvote.png" width="18"></a>
+        </td>
+        <td width="80" align="right" style="color:#842;" title="{{ cmt_dt }} GMT">{{ getval.timeago }}
+        </td>
+      </tr>
+    </table>
+  </div>
+<!-- =========== -->
+
+  <div style="padding: 6px;">
+    {{#qtxt}}
+    <div style="border-left: solid 2px #46e; padding: 4px;background-color: #f4f4f4;border-radius: 2px;"><code><span style="color: blue;">{{qname}}: </span>{{qtxt}}</code>
+    </div>
+    {{/qtxt}}
+    <code>{{ getval.cmttxt }}</code>
+  </div>
+<!-- =========== -->
+
+</script>
+

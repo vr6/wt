@@ -1,0 +1,184 @@
+<div class="viewmain">
+    <h3>New Job Postings</h3><br>
+
+    <div class="comment" style="margin-bottom: 20px;padding: 8px;padding-top: 2px;width: 600px;">
+        <form novalidate role="form" id="jobform" name="jobform">
+            <table width=100% style="border-spacing: 4px; border-collapse: separate;margin-top: 6px;margin-bottom: -4px;">
+                <tr>
+                    <td>
+                        <input type="text" placeholder="Keywords"  class="form-control" 
+                        ng-model="jf.q" style="width: 150px;display: inline;">
+                        <select ng-model="jf.co" class="form-control" style="width: 150px;display: inline;">
+                            <option value="">Country</option>
+                            <option ng-repeat="c in countries" value="{{c.code}}">{{c.name}}</option>
+                        </select>
+                        <input type="text" placeholder="City"  class="form-control" 
+                        ng-model="jf.city" style="width: 150px;display: inline;">
+
+                        <button class="btn btn-primary" style="width: 100px;height:32px;margin-top:-2px;display: inline;" type="submit" ng-click="loadjobs(jpage, true)" ng-disabled="form2
+                    .$invalid">Go</button></td>
+                </tr>
+            </table>
+        </form>
+    </div>
+
+    <div ng-hide="data.results.length > 0">
+        <span>No results found. Please try changing search citeria.</span>
+    </div>
+    <div ng-show="data.results.length > 0" style="min-width: 600px; padding-bottom: 20px;">
+		<table class="stable" width="100%">
+			<thead>
+				<tr>
+					<th>Posted</th>
+					<th>Location</th>
+					<th>Company</th>
+					<th>Title</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr ng-repeat-start="row in data.results" ng-click="showjob($index, 'job')">
+		            <td>{{row.formattedRelativeTime}}</td>
+		            <td>{{row.formattedLocation}}</td>
+		            <td>{{row.company}}</td>
+		            <td>{{row.jobtitle}}</td>
+				</tr>
+			    <tr ng-repeat-end id="job{{$index}}" style="display:none;">
+		            <td colspan=4 style=" background-color: #fffee4;">
+					    <div class="table">
+					       <div class="row">
+					          <div class="cellh">Job Title:</div>
+					          <div class="celld">{{row.jobtitle}}</div>
+					       </div>
+					       <div class="row">
+					          <div class="cellh">Description:</div>
+					          <div class="celld">{{row.snippet}}</div>
+					       </div>
+					       <div class="row">
+					          <div class="cellh">Date Posted:</div>
+					          <div class="celld">{{row.date}}</div>
+					       </div>
+					       <div class="row">
+					          <div class="cellh">Actions:</div>
+					          <div class="celld">
+					          	[ <a href="{{row.url}}" target="_blank">View and Apply</a> ]&nbsp;
+					          	[ <a ng-click="savejob(row, $index)">Save</a> ]&nbsp;
+					          	[ <a ng-click="applied(row, $index, '')">Mark as Applied</a> ]&nbsp;
+					          	</div>
+					       </div>
+					   </div>
+		            </td>
+			    </tr>
+			</tbody>
+		</table>
+	    <div style="font-size: 13px;">
+	        <a ng-show="jpage > 1" ng-click="loadjobs(jpage-1)">Back</a>&nbsp;&nbsp;
+	        <a ng-click="loadjobs(jpage+1)">More</a>
+	    </div>
+	</div>
+    <span style="font-size: 20px;">Your Saved Jobs</span><br>
+    <div ng-hide="savedjobs.results.length > 0">
+        <span>No saved jobs found.</span>
+    </div>
+    <div ng-show="savedjobs.results.length > 0" style="min-width: 600px; padding-bottom: 20px;">
+		<table class="stable" width="100%">
+			<thead>
+				<tr>
+					<th>Posted</th>
+					<th>Location</th>
+					<th>Company</th>
+					<th>Title</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr ng-repeat-start="row in savedjobs.results" ng-click="showjob($index,'sjob')">
+		            <td>{{row.formattedRelativeTime}}</td>
+		            <td>{{row.formattedLocation}}</td>
+		            <td>{{row.company}}</td>
+		            <td>{{row.jobtitle}}</td>
+				</tr>
+			    <tr ng-repeat-end id="sjob{{$index}}" style="display:none;">
+		            <td colspan=4 style=" background-color: #fffee4;">
+					    <div class="table">
+					       <div class="row">
+					          <div class="cellh">Job Title:</div>
+					          <div class="celld">{{row.jobtitle}}</div>
+					       </div>
+					       <div class="row">
+					          <div class="cellh">Description:</div>
+					          <div class="celld">{{row.snippet}}</div>
+					       </div>
+					       <div class="row">
+					          <div class="cellh">Date Posted:</div>
+					          <div class="celld">{{row.date}}</div>
+					       </div>
+					       <div class="row">
+					          <div class="cellh">Actions:</div>
+					          <div class="celld">
+					          	[ <a href="{{row.url}}" target="_blank">View and Apply</a> ]&nbsp;
+					          	[ <a ng-click="rmsavejob(row.jobkey, $index)">Remove</a> ]&nbsp;
+					          	[ <a ng-click="applied(row, $index, 'saved')">Mark as Applied</a> ]&nbsp;
+					          	</div>
+					       </div>
+					   </div>
+		            </td>
+			    </tr>
+			</tbody>
+		</table>
+	</div>
+	<p><br>
+    <span style="font-size: 20px;">Applied Jobs</span><br>
+    <div ng-hide="appliedjobs.results.length > 0">
+        <span>No applied jobs found.</span>
+    </div>
+    <div ng-show="appliedjobs.results.length > 0" style="min-width: 600px; padding-bottom: 20px;">
+		<table class="stable" width="100%">
+			<thead>
+				<tr>
+					<th>Posted</th>
+					<th>Location</th>
+					<th>Company</th>
+					<th>Title</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr ng-repeat-start="row in appliedjobs.results" ng-click="showjob($index,'ajob')">
+		            <td>{{row.formattedRelativeTime}}</td>
+		            <td>{{row.formattedLocation}}</td>
+		            <td>{{row.company}}</td>
+		            <td>{{row.jobtitle}}</td>
+				</tr>
+			    <tr ng-repeat-end id="ajob{{$index}}" style="display:none;">
+		            <td colspan=4 style=" background-color: #fffee4;">
+					    <div class="table">
+					       <div class="row">
+					          <div class="cellh">Job Title:</div>
+					          <div class="celld">{{row.jobtitle}}</div>
+					       </div>
+					       <div class="row">
+					          <div class="cellh">Description:</div>
+					          <div class="celld">{{row.snippet}}</div>
+					       </div>
+					       <div class="row">
+					          <div class="cellh">Date Posted:</div>
+					          <div class="celld">{{row.date}}</div>
+					       </div>
+					       <div class="row">
+					          <div class="cellh">Actions:</div>
+					          <div class="celld">
+					          	[ <a href="{{row.url}}" target="_blank">View Details</a> ]&nbsp;
+					          	[ <a ng-click="rmapplied(row.jobkey, $index)">Remove</a> ]&nbsp;
+					          	</div>
+					       </div>
+					   </div>
+		            </td>
+			    </tr>
+			</tbody>
+		</table>
+	</div>
+<hr>
+</div>
+<div style="background-color: #dfdfdf;color:#000;">
+    <div class="viewmain">
+    <cmtvcase topic=3></cmtvcase>
+    </div>
+</div>

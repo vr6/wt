@@ -1,0 +1,19 @@
+<div class="viewmain">
+    <div id="wrapper" style="overflow: hidden;" ng-controller="trendsCtrl17">
+        <span style="font-size:20px;" >Overall Trends</span>
+        <p>
+        <span ng-hide="tloaded">Loading...</span> 
+        <div style="width: 700px; height: 220px;"  ng-show="tloaded" >
+            <div style="background-color: #777;color:white;padding-left: 10px;">EAC</div>
+            <canvas id="trends_eac" style="background-color: #555;"></canvas>
+        </div><p><br>&nbsp;
+        <div style="width: 700px;background-color: #555;" ng-show="tloaded" >
+            <div style="width: 630px; height: 220px;">
+                <div style="width: 700px;background-color: #777;color:white;padding-left: 10px;">WAC</div>
+                <canvas id="trends_wac" style="background-color: #555;"></canvas>
+            </div>
+            <p><br>
+        </div>
+    </div>
+</div>
+

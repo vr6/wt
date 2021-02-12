@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Worktheme - H1B Status, H1B Tracker, H1B Processing - Realtime data visualizations</title>
+    <meta name="description" content="Provides forums and Realtime data visualizations for H1B processing"/>
+
+    <link rel="stylesheet" href="lib/bootstrap.custom.min.css">
+    <link rel="stylesheet" href="css/tracker.css">
+
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+      <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.bundle.min.js"></script>
+
+    <script src="js/trends.min.js"></script>
+
+</head>
+<body onload="init()">
+<div class="navbar2">
+    <span onlick="window.location.href='/';">wt</span>
+    <a href="/updates.html">DATA</a>
+    <a href="/msg.html">MSGS</a>
+    <a style="color: #fe8" href="#">TRENDS</a>
+    <a href="/cases.html">CASES</a>
+    <a href="/help.html">HELP</a>
+</div>
+
+<!-- ============  -->
+<!--     <nav class="navbar navbar-default navbar-fixed-top cnav">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <div class="sidebar-brand">
+            <a style="font-size: 24px;color:#ffe066;font-weight:bold;font-family: 'Josefin Sans', sans-serif;" href="/">worktheme</a>
+          </div>          
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+            <li><a href="/">UPDATES</a></li>
+            <li><a href="/msg.html">MESSAGES</a></li>
+            <li><a style="color: #fe8" href="#">TRENDS</a></li>
+            <li><a href="/cases.html">CASES</a></li>
+            <li><a href="/help.html">HELP</a></li>
+          </ul>
+        </div>
+    </nav>
+ -->
+<!-- ============  -->
+
+<div class="viewmain">
+    <h3>H-1B Case Status - 2020 (Applied in 2019)</h3>
+    <p><br>The purpose of these pages is to provide better and broader visibility into the status and processing of visa cases, because USCIS provides status for only one case at a time.
+
+    <p><b>Disclaimer:</b> While efforts are made to ensure the accuracy of the data on this website, the website is not responsible for any possible descrepancy in the data or any impact arising out of it. 
+
+    <style type="text/css">
+    .desc1 {white-space: normal;background-color: white;}
+    .desc2 {white-space: normal;background-color: white;font-weight: bold;width: 100px;}
+
+    </style>
+    <p>&nbsp;<br>
+    <table width="560" class="stable">
+        <tr>
+            <th colspan=2><b>Description</b></th>
+        </tr>
+        <tr><td class="desc2">EAC, WAC</td><td class="desc1">The processing centers on East and West coasts</td></tr>
+        <tr><td class="desc2">REC, RFE, RESP, WTD, APP, DNM</td><td class="desc1">Status: Received, RFE, RFE Response Received, Transferred, Approved, Decision notice mailed</td></tr>
+        <tr><td class="desc2">chgs, app1, app2</td><td class="desc1">Changes for the day, Direct aproval, Approval after RFE</td></tr>
+        <tr><td class="desc2">Overall Trends Chart</td><td class="desc1">Shows daily snapshots for status totals</td></tr>
+        <tr><td class="desc2">Case Series Chart</td><td class="desc1">Shows realtime stats for each series and their status</td></tr>
+        <tr><td class="desc2">Recent Updates Chart</td><td class="desc1">Shows the 50 most recent data updates by volunteers in real time</td></tr>
+        <tr><td class="desc2">Series Grid</td><td class="desc1">Lets you select a series to have a look at the overall picture of 1000 cases</td></tr>
+    </table>
+    <p>&nbsp;<br>
+
+    <span style="font-size:20px;" >Overall Trends - EAC</span>
+        <div class="progress2"><canvas id="trends_eac"  style="background-color: #555;"></canvas></div>
+    <p><br>&nbsp;
+    <span style="font-size:20px;" >Overall Trends - WAC</span>
+        <div class="progress2"><canvas id="trends_wac"  style="background-color: #555;"></canvas></div>
+    <p><br>&nbsp;
+<!-- 
+    <div id="wrapper" style="overflow: hidden;">
+ -->
+    <div id="wrapper">
+        <style type="text/css">
+            #mtbl tr td {padding: 3px 8px 2px 6px;}
+            #mtbl th {cursor: pointer;}
+            #mtbl2 tr td {padding: 3px 8px 2px 6px;}
+            #mtbl2 th {cursor: pointer;}
+            #historytbl tr td {padding: 3px 8px 2px 6px;}
+            #historytbl th {cursor: pointer;}
+        </style>
+        <p>&nbsp;<br>
+        
+        <span style="font-size:20px;" >Case Series vs Current Status</span>
+        <p>
+        <div style="width: 700px; height: 220px;">
+            <div style="background-color: #777;color:white;padding-left: 10px;">EAC</div>
+            <canvas id="canvas_eac" style="background-color: #555;"></canvas>
+        </div>
+        <p><br>&nbsp;
+        <div style="width: 700px; height: 220px;">
+            <div style="background-color: #777;color:white;padding-left: 10px;">WAC</div>
+            <canvas id="canvas_wac" style="background-color: #555;"></canvas>
+        </div>
+
+<!-- 
+        <div style="width: 700px;background-color: #555;">
+            <div style="width: 630px; height: 220px;">
+                <div style="width: 700px;background-color: #777;color:white;padding-left: 10px;">WAC</div>
+                <canvas id="canvas_wac" style="background-color: #555;"></canvas>
+            </div>
+            <br>
+        </div>
+
+ -->    </div>
+
+
+    </div>   <!--  wrapper- -->
+</div>  <!--  view-main- -->
+<hr>
+        <p>&nbsp;<br>
+<!-- ================================ -->
+
+</body>
+</html>

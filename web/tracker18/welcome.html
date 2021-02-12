@@ -1,0 +1,530 @@
+<div class="viewmain">
+    <div id="wrapper" style="overflow: hidden;" ng-controller="vcaselistCtrl18">
+        <style type="text/css">
+        #mtbl tr td {
+/*            height: 6px;
+            font-size: 11px;*/
+            padding: 3px 8px 2px 6px;
+        }
+        </style>
+        <p>&nbsp;<br>
+        <style type="text/css">
+        #mtbl th {cursor: pointer;}
+        </style>
+
+<table>
+    <tr>
+            <td>
+        <span style="font-size:20px;">Recent Updates</span>&nbsp;&nbsp;
+        <img ng-show="msloaded" src="tracker/img/refresh.png" width="25" ng-click="loadmseries(sortcol, sortdir)" style="cursor: pointer;padding-bottom:4px;">
+        <img ng-hide="msloaded" src="tracker/img/refresh.gif" width="25" style="padding-bottom:4px;">
+            </td>
+            <td align="right">
+                <a ng-show="mpage > 1" ng-click="mpage=mpage-1">Prev</a>&nbsp;&nbsp;
+                <span>Page {{ mpage }}</span>&nbsp;&nbsp;
+                <a ng-show="mpage < 6" ng-click="mpage=mpage+1">Next</a>
+            </td>
+    </tr>
+    <tr>
+        <td colspan="2">
+
+        <table width="600" class="stable" id="mtbl">
+            <tr>
+                <th ng-click="setsort('user')" ng-style="{'background-color': sortclr('user')}">User</th>
+                <th ng-click="setsort('id')" ng-style="{'background-color': sortclr('id')}">Series</th>
+                <th ng-click="setsort('rec')" ng-style="{'background-color': sortclr('rec')}" style="color: #880">Recvd</th>
+                <th ng-click="setsort('rec')" ng-style="{'background-color': sortclr('rec')}" style="color: #880">WTD</th>
+                <th ng-click="setsort('rfe')" ng-style="{'background-color': sortclr('rfe')}" style="color: #606">RFE</th>
+                <th ng-click="setsort('rrr')" ng-style="{'background-color': sortclr('rrr')}" style="color: #840">Resp</th>
+                <th ng-click="setsort('app')" ng-style="{'background-color': sortclr('app')}" style="color: #080">Apprv</th>
+                <th ng-click="setsort('dnm')" ng-style="{'background-color': sortclr('dnm'), 'border-right':'1px solid #aaa'}">DNM</th>
+                <th>days</th>
+                <th style="color: #00f">chgs</th>
+                <th style="color: #00f">rfe</th>
+                <th style="color: #00f">resp</th>
+                <th style="color: #00f">dnm</th>
+                <th style="color: #00f">app1</th>
+                <th style="color: #00f">app2</th>
+                <th ng-click="setsort('dt')" ng-style="{'background-color': sortclr('dt')}">Updated</th>
+            </tr>
+            <tr bgcolor="#ffe" style="font-weight: bold;">
+                <td rowspan=2>Totals</td>
+                <td>EAC {{ eacmstatstot }}</td>
+                <td>{{ eacmstot.rec }}</td>
+                <td>{{ eacmstot.wtd }}</td>
+                <td>{{ eacmstot.rfe }}</td>
+                <td>{{ eacmstot.rrr }}</td>
+                <td>{{ eacmstot.app }}</td>
+                <td style="border-right: 1px solid #aaa;">{{ eacmstot.dnm }}</td>
+<!--                 <td>{{ mstot.chg }}</td> -->
+                <td rowspan=2 align="center">&gt;&gt;</td>
+                <td style="background-color: #fe8">{{eaccfdtstat[0]}}</td>
+                <td style="background-color: #fe8">{{eaccfdtstat[1]}}</td>
+                <td style="background-color: #fe8">{{eaccfdtstat[2]}}</td>
+                <td style="background-color: #fe8">{{eaccfdtstat[3]}}</td>
+                <td style="background-color: #fe8">{{eaccfdtstat[4]}}</td>
+                <td style="background-color: #fe8">{{eaccfdtstat[5]}}</td>
+                <td>&nbsp;</td>
+            </tr>
+            <tr bgcolor="#ffe" style="font-weight: bold;">
+<!--                 <td>WAC Totals</td> -->
+                <td>WAC {{ wacmstatstot }}</td>
+                <td>{{ wacmstot.rec }}</td>
+                <td>{{ wacmstot.wtd }}</td>
+                <td>{{ wacmstot.rfe }}</td>
+                <td>{{ wacmstot.rrr }}</td>
+                <td>{{ wacmstot.app }}</td>
+                <td style="border-right: 1px solid #aaa;">{{ wacmstot.dnm }}</td>
+<!--                 <td>{{ mstot.chg }}</td> -->
+<!--                 <td>today&nbsp;&nbsp;&gt;</td> -->
+                <td style="background-color: #fe8">{{waccfdtstat[0]}}</td>
+                <td style="background-color: #fe8">{{waccfdtstat[1]}}</td>
+                <td style="background-color: #fe8">{{waccfdtstat[2]}}</td>
+                <td style="background-color: #fe8">{{waccfdtstat[3]}}</td>
+                <td style="background-color: #fe8">{{waccfdtstat[4]}}</td>
+                <td style="background-color: #fe8">{{waccfdtstat[5]}}</td>
+                <td>&nbsp;</td>
+            </tr>
+            <tr ng-repeat="st in mstats | limitTo: 30 : (mpage-1) * 30"
+                ng-style="{'background-color': st.chguser.startsWith('*') ? '#aff' : '', 'border-top':st.cdt ? '3px solid #e84': ''}"
+            >
+                <td>{{ st.chguser }}</td>
+                <td><span ng-click="getvcase(st.id, null, null, true);" style="color: #66c;cursor: pointer;">{{ st.id }}</span></td>
+                <td style="color: #880">{{ st.rec }}</td>
+                <td style="color: #880">{{ st.wtd }}</td>
+                <td style="color: #606">{{ st.rfe }}</td>
+                <td style="color: #840">{{ st.rrr }}</td>
+                <td style="color: #080">{{ st.app }}</td>
+                <td style="border-right: 1px solid #aaa;">{{ st.dnm }}</td>
+                <td>{{ st.nhours/24 | round }}</td>
+                <td style="color: #00f">{{ st.chgs == '' ? 0 : st.chgs.split(',').length }}</td>
+                <td style="color: #00f">{{ st.tchgs.crfe }}</td>
+                <td style="color: #00f">{{ st.tchgs.cresp }}</td>
+                <td style="color: #00f">{{ st.tchgs.cdnm }}</td>
+                <td style="color: #00f">{{ st.tchgs.app1 }}</td>
+                <td style="color: #00f">{{ st.tchgs.app2 }}</td>
+                <td title ="{{ st.chgdt }} GMT">{{ st.chgdt | timeago }}</td>
+            </tr>
+        </table>
+
+        </td>
+    </tr>
+    <tr>
+            <td colspan="2" align="right">
+                <a ng-show="mpage > 1" ng-click="mpage=mpage-1">Prev</a>&nbsp;&nbsp;
+                <span>Page {{ mpage }}</span>&nbsp;&nbsp;
+                <a ng-show="mpage < 6" ng-click="mpage=mpage+1">Next</a>
+            </td>
+    </tr>
+</table>
+
+
+        <p><br>
+        <h3>Series Grid (EAC18 &amp; WAC18)</h3>
+        <table id="seriestbl" border=1 cellspacing=0>
+            <tr style="background-color: #eee">
+            <td></td><td style="font-size: 14px;width: 250px;">EAC 18</td>
+            <td style="background-color: #fff" rowspan="46">&nbsp;&nbsp;&nbsp;&nbsp;</td>
+            <td></td><td style="font-size: 14px;width: 250px;">WAC 18</td></tr>
+            <tr ng-repeat="n in [] | range:45">
+            <td class='cd' ng-click="getseriesrow('EAC18'+(130+n))">{{130 + n}}</td>
+            <td>
+                <div ng-repeat="k in [] | range:6" class="s">
+                    <div ng-if="eac2[n][k] == 1"
+                        ng-style="{'background-color': getMsbg( 'EAC18'+(130+n) + (50+k) )}"
+                        ng-click="getvcase('EAC18'+(130+n) + (50+k), null, null, true)"
+                        >
+                        <span>{{50 + k}}</span><span style="color: red" ng-show="changes['EAC18'+(130+n) + (50+k)]">*</span>
+                    </div>
+                    <div ng-if="eac2[n][k] == 0"
+                        style="color:#bbb"
+                        >
+                        <span>{{50 + k}}</span>
+                    </div>
+                </div>
+            </td>
+            <td class='cd' ng-click="getseriesrow('WAC18'+(130+n))">{{130 + n}}</td>
+            <td>
+                <div ng-repeat="k in [] | range:6" class="s">
+                    <div ng-if="wac2[n][k] == 1"
+                        ng-style="{'background-color': getMsbg( 'WAC18'+(130+n) + (50+k) )}"
+                        ng-click="getvcase('WAC18'+(130+n) + (50+k), null, null, true)"
+                        >
+                        <span>{{50 + k}}</span><span style="color: red" ng-show="changes['WAC18'+(130+n) + (50+k)]">*</span>
+                    </div>
+                    <div ng-if="wac2[n][k] == 0"
+                        style="color:#bbb"
+                        >
+                        <span>{{50 + k}}</span>
+                    </div>
+                </div>
+            </td>
+            </tr>
+        </table>
+        <b>Notes</b><br>
+        <ul>
+        <li>Click on a series to display status for all cases for that series, in the grid below</li>
+<!--         <li><span style="font-weight: bold; color: red;">NEW: </span>Click on a series row id (145, 146 etc) to display status for all series for that row.</li> -->
+        <li>The <span style="color: red;">*</span> next to the series number means there were changed cases in last update</li>
+        <li>All the series are being maintained by volunteer admins.</li>
+        <li>Color coding for recency of updates (in GMT): 
+        <div style="display: inline;" id="seriesgrid">
+        <div class="cc" style="background-color: #ccffff">...</div>
+        <div class="cc" style="background-color: #bbf8bb">today</div>
+        <div class="cc" style="background-color: #f6faaa">y'day</div>
+        <div class="cc" style="background-color: #ffddaa">2d</div>
+        <div class="cc" style="background-color: #ffc8e0">3d</div>
+        <div class="cc" style="background-color: #dce4ff">4d</div>
+        </div>
+        </li>
+        </ul>
+
+        <p><br>
+        <div ng-hide="vcaseid == null || res == null">
+            <p>
+             <span ng-style="{'background-color':getMsbg( vcase.id ), 'border':'1px solid #888', 'border-radius':'50%'}"> 
+            &nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;&nbsp;
+            <span style="font-size:20px;">{{vcase.id}}</b>&nbsp;&nbsp;</span>{{vcase.dt}}
+            &nbsp;&nbsp;
+<!-- 
+            <a style="font-size: 10pt;" ng-click="getvcase(vcase.id, 'prev', vcase.chgdt)">[ prev dt ]</a>
+            &nbsp;&nbsp;<a style="font-size: 10pt;" ng-click="getvcase(vcase.id, 'next', vcase.chgdt)">[ next dt ]</a>&nbsp;&nbsp;&nbsp;
+ -->
+            <span style="font-size:14px;" ng-hide="changes[vcase.id] == null">
+            Update : {{vcase.chgdt | timeago }} ago by <span style="color:#00a;">{{vcase.chguser}}</span></span>
+            &nbsp;&nbsp;<span style="background-color: #aff;font-size: 10pt;" ng-show="vcase.chguser.startsWith('*')">&nbsp;IN PROGRESS&nbsp;</span>
+            <table id="tbl" border="1" cellspacing="0">
+              <tr>
+                <td></td>
+                <td ng-repeat="n in [] | range:100">{{n%10 == 0? n/10 : n%5 == 0? '*' : ''}}</td>
+              </tr>
+              <tr ng-repeat="n in [] | range:10">
+                <td>{{n}}</td>
+
+
+                <td 
+                    ng-repeat="k in [] | range:100" 
+                    ng-click="history(vcase.id + n + (k < 10 ? '0' + k : k))"
+                    title="{{vcase.id + n + (k < 10 ? '0' + k : k) + ' ' + getDetail(res[n*100 + k])}}"
+                    ng-style="{'background-color': getColor(res[n*100 + k].charAt(0)), 'border': getBorder(vcase.id, (n*100 + k))}"
+                    ></td>
+              </tr>
+            </table>
+            <div style="border: 1px solid #ccc">
+                Received: <span style="color: blue">{{sdetail[0]}}</span>&nbsp;&nbsp;&nbsp;
+                RFE Req Mailed: <span style="color: blue">{{sdetail[3]}}</span>&nbsp;&nbsp;&nbsp;
+                RFE Resp Recv.: <span style="color: blue">{{sdetail[7]}}</span>&nbsp;&nbsp;&nbsp;
+                Transferred: <span style="color: blue">{{sdetail[6]}}</span>&nbsp;&nbsp;&nbsp;
+                Decision Notice: <span style="color: blue">{{sdetail[8]}}</span>&nbsp;&nbsp;&nbsp;
+                Approved: <span style="color: blue">{{sdetail[1]}}</span>&nbsp;&nbsp;&nbsp;
+            </div>
+            <b>Notes</b><br>
+            <ul>
+            <li>For example, if the case number has last 3 digits as 805, then you should look at row numbered "8" and column "05".</li>
+            <li>You can see case details for a cell by hovering the mouse over that cell.</li>
+            <li>You can also click on a cell and see the change history for that case.</li>
+<!--             <li><span style="color: red;">********** Case history is not available at the moment. Will be back soon. **********</span></li> -->
+            </ul>
+
+        </div>
+<!--         <p><br> -->
+        <div ng-hide="seriesrow == null">
+            <p>
+            <span style="font-size:20px;">{{seriesrow.id}}</b>
+            <table id="tbl" border="1" cellspacing="0" ng-repeat="vdata in seriesrow.data">
+              <tr  ng-if="$first">
+                <td></td>
+                <td ng-repeat="n in [] | range:100">{{n%10 == 0? n/10 : n%5 == 0? '*' : ''}}</td>
+              </tr>
+              <tr ng-repeat="n in [] | range:10">
+                <td>{{n}}</td>
+
+
+                <td 
+                    ng-repeat="k in [] | range:100" 
+                    ng-click="history(vdata.id + n + (k < 10 ? '0' + k : k))"
+                    title="{{vdata.id + n + (k < 10 ? '0' + k : k) + ' ' + getDetail(vdata.res[n*100 + k])}}"
+                    ng-style="{'background-color': getColor(vdata.res[n*100 + k].charAt(0)), 'border': getBorder(vdata.id, (n*100 + k))}"
+                    ></td>
+              </tr>
+            </table>
+            <div style="border: 1px solid #ccc">
+                Received: <span style="color: blue">{{rowdetail[0]}}</span>&nbsp;&nbsp;&nbsp;
+                RFE Req Mailed: <span style="color: blue">{{rowdetail[3]}}</span>&nbsp;&nbsp;&nbsp;
+                RFE Resp Recv.: <span style="color: blue">{{rowdetail[7]}}</span>&nbsp;&nbsp;&nbsp;
+                Transferred: <span style="color: blue">{{rowdetail[6]}}</span>&nbsp;&nbsp;&nbsp;
+                Decision Notice: <span style="color: blue">{{rowdetail[8]}}</span>&nbsp;&nbsp;&nbsp;
+                Approved: <span style="color: blue">{{rowdetail[1]}}</span>&nbsp;&nbsp;&nbsp;
+            </div>
+            <b>Notes</b><br>
+            <ul>
+            <li>For example, if the case number has last 3 digits as 805, then you should look at row numbered "8" and column "05".</li>
+            <li>You can see case details for a cell by hovering the mouse over that cell.</li>
+            <li>You can also click on a cell and see the change history for that case.</li>
+            </ul>
+        </div>
+
+            </p><br>
+            <h3>Series Progress - {{vcase.id}}</h3>
+            <div class="progress2"><canvas id="schart"  style="background-color: #555;"></canvas></div>
+        <p><br>
+        <span style="font-size:20px;">Credits</span><br>
+        <p>Following are the volunteers bringing you these data updates.
+        <table width="560" class="stable" id="mtbl">
+            <tr>
+                <th>Data Contributors - <span style="color: blue">updates</span></th>
+            </tr>
+            <tr>
+                <td style="white-space: normal;background-color: white;"><div class="cbadge" ng-repeat="a in admins">{{ a.name }} <span style="color: blue">{{ a.count }}</span>
+                </div></td>
+            </tr>
+        </table>
+            <hr>
+
+
+    </div>
+</div>
+<div style="background-color: #dfdddc;color:#000;" id="cmtsection">
+    <div class="viewmain">
+        <div ng-controller="cmtCtrl18">
+            <div style="max-width: 600px; margin-bottom: 5px;font-size: 16px;">
+                <span ng-hide="fltrmode">Post Message</span>
+                <span ng-show="fltrmode">Search Messages</span>
+                <span style="margin-left: 20px;font-size: 10pt;">
+                    <a ng-hide="fltrmode" ng-click="showfltr(true)">Search Messages</a>
+                    <a ng-show="fltrmode" ng-click="showfltr(false)">Post Message</a>&nbsp;&nbsp;
+                    <a ng-show="fltrdata" ng-click="clearfltr()">Clear Filter</a>
+                </span>
+            </div>
+            <div class="comment" ng-hide="fltrmode" id="cmtform" style="margin-bottom: 20px;padding: 8px;padding-top: 2px;">
+                <form novalidate role="form" id="form1" name="form1" accept-charset="UTF-8">
+                    <table width=100% style="border-spacing: 4px; border-collapse: separate;margin-top: 6px;margin-bottom: 6px;">
+                        <tr>
+                            <td width="100%" colspan=2>
+                            <div style="margin-bottom:8px; padding: 8px; background-color: #e6f0f8; border:1px solid #ccc;border-radius: 6px;" ng-hide="qtxt==''">
+                            <code><span style="color: blue;font-weight: bold;">{{qname}}: </span>{{qtxt}}
+                            <span style="color:#c40;cursor: pointer;margin-left: 12px;" ng-click="qtxt=''">[close]</span></code>
+                            </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td width="100%" colspan=2><textarea id="cmtbox"
+                            style="height:80px;font-family: Consolas,monaco,Lucida Console,Lucida Sans Typewriter,Bitstream Vera Sans Mono; font-size: 13px;" 
+                            required type="text" placeholder="Your message"  class="form-control" ng-model="cmt.txt" ng-change="ontyping()"></textarea></td>
+                            <td>
+                            <button class="btn btn-primary" style="width: 50px;height:80px;margin-top:-2px;display: inline;" type="submit" ng-click="addcomment(cmt)" ng-disabled="form1.$invalid">Go</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td width="80%">
+                            <div id="userlen" style="margin-right: 10px;display: inline;font-size:12px; color: #888;"></div>
+                            <div id="utyping" style="display: inline;font-size:12px; color: #e06f00;"></div>
+                            </td>
+                            <td align="center"><img id="emoji" src="img/sm2.png" width="18" height="18"></img>
+<div class="pop" id="epop">
+<span>🙂</span><span>😃</span><span>😆</span><span>😉</span><span>😎</span><span>😇</span><span>😜</span><span>🤔</span><br>
+<span>😐</span><span>🙄</span><span>😳</span><span>😔</span><span>😮</span><span>🤐</span><span>😴</span><span>😓</span><br>
+<span>🙁</span><span>😬</span><span>😥</span><span>😨</span><span>😱</span><span>😫</span><span>😠</span><span>😡</span><br>
+<span>👍</span><span>👌</span><span>👏</span><span>🙏</span><span>💤</span><span>✌</span><span>🖐</span><span>👎</span><br>
+<span>🏆</span><span>💥</span><span>⭐</span><span>⚡</span><span>✨</span><span>💡</span><span>🎉</span><span>🍺</span>
+</div>
+                            </td>
+                        </tr>
+                    </table>
+
+                </form>
+                <div style="padding: 8px; background-color: #e6f0f8; border:1px solid #ccc;border-radius: 6px;" 
+                    ng-hide="uinfoedit || topic != 2">
+                    <div class="userinfo"><span style="color:#840">Name:</span> {{uinfo.name | dash}}</div>
+                    <div class="userinfo"><span style="color:#840">Status:</span> {{statusopts[uinfo.status] | dash}}</div>
+                    <div class="userinfo"><span style="color:#840">Center:</span> {{uinfo.center | dash}}</div>
+                    <div class="userinfo"><span style="color:#840">Series:</span> {{uinfo.series | dash}}</div>
+                    <div class="userinfo"><span style="color:#840">RFE Reason:</span> {{uinfo.rfereason | dash}}</div>
+                    <div class="userinfo"><span style="color:#840">Degree:</span> {{uinfo.degree | dash}}</div>
+                    <div class="userinfo"><span style="color:#840">Processing:</span> {{uinfo.processing | dash}}</div>
+                    <div class="userinfo"><span style="color:#840">Skill/Profession:</span> {{uinfo.skill | dash}}</div>
+                    <div class="userinfo"><span style="color:#840">H1-B Sponsor:</span> {{uinfo.company | dash}}</div>
+                    <div class="userinfo"><span style="color:#840">Country:</span> {{uinfo.country | dash}}</div>
+                    <div class="userinfo"><span style="color:#840">H-1B City:</span> {{uinfo.empcity | dash}}</div>
+
+                        <span style="color:#04c;cursor: pointer;margin-left: 12px;" ng-click="uinfoedit=true">edit</span>
+                </div>
+                <div style="margin-top:8px; padding: 8px; background-color: #f8f0e6; border:1px solid #ccc;border-radius: 6px;" ng-hide="uinfoedit || topic != 2">
+                Please update your info above, so that you can connect with others who are in the same boat as you. Your company name will not be displayed to others.
+                </div>
+
+
+
+                <form novalidate role="form" id="form2" name="form2" style="padding: 8px; background-color: #e6f0f8; border:1px solid #ccc;border-radius: 6px;" ng-show="uinfoedit">
+                        <div ng-if="topic==2" style="display: inline;">
+                           <input type="text" placeholder="Your name"  class="form-control" 
+                                ng-model="uinfo.name" required style="width: 140px;display: inline;">
+                            <select ng-model="uinfo.status" class="form-control" style="width: 140px;display: inline;">
+                                <option value="">Current status</option>
+                                <option value="1">RFE</option>
+                                <option value="2">RFE Response Sent</option>
+                                <option value="3">Received</option>
+                                <option value="4">Approved</option>
+                                <option value="5">Name Was Updated</option>
+                                <option value="6">Other</option>
+                            </select>
+                            <select ng-model="uinfo.center" class="form-control" style="width: 90px;display: inline;">
+                                <option value="">Center</option>
+                                <option value="EAC">EAC</option>
+                                <option value="WAC">WAC</option>
+                            </select>
+                            <input type="text" placeholder="Series" class="form-control" 
+                            ng-model="uinfo.series" style="width: 80px;display: inline;">
+
+                            <select ng-model="uinfo.degree" class="form-control" style="width: 90px;display: inline;">
+                                <option value="">Degree</option>
+                                <option value="Advanced">Advanced</option>
+                                <option value="Non-Adv">Non-Adv</option>
+                            </select>
+                            <select ng-model="uinfo.processing" class="form-control" style="width: 140px;display: inline;">
+                                <option value="">Processing</option>
+                                <option value="Premium">Premium</option>
+                                <option value="Regular">Regular</option>
+                            </select>
+                            <input type="text" placeholder="Skill / Profession" class="form-control" 
+                            ng-model="uinfo.skill" style="width: 140px;display: inline;">
+                            <input type="text" placeholder="H-1B Sponsor" class="form-control" 
+                            ng-model="uinfo.company" style="width: 135px;display: inline;">
+    <!--                         <input type="text" placeholder="Country" class="form-control" 
+                            ng-model="uinfo.country" style="width: 130px;display: inline;">
+     -->                        <select ng-model="uinfo.country" class="form-control" style="width: 130px;display: inline;">
+                                <option value="">Country</option>
+                                <option ng-repeat="c in countries" value="{{c.name}}">{{c.name}}</option>
+                            </select>
+
+                            <input type="text" placeholder="H-1B City (US)" class="form-control" 
+                            ng-model="uinfo.empcity" style="width: 140px;display: inline;">
+                            <input type="text" placeholder="RFE Reason or other detail" class="form-control" 
+                            ng-model="uinfo.rfereason" style="width: 278px;display: inline;">
+        <button class="btn btn-primary" type="submit" ng-click="saveuinfo()" ng-disabled="form2.$invalid">Save</button>
+        <button class="btn btn-default" type="button" ng-click="canceluinfo()">Cancel</button>
+                        </div>
+                </form>
+            </div>
+            <div class="comment" id="searchform" ng-show="fltrmode" style="margin-bottom: 20px;padding: 8px;padding-top: 2px;">
+                <form novalidate role="form" id="form2" name="form2">
+                    <table width=100% style="border-spacing: 4px; border-collapse: separate;margin-top: 6px;margin-bottom: -4px;">
+                        <tr>
+                            <td>
+                                <input type="text" placeholder="Name"  class="form-control" 
+                                ng-model="fltr.name" style="width: 100px;display: inline;">
+                                <input type="text" placeholder="Content"  class="form-control" 
+                                ng-model="fltr.tags" style="width: 120px;display: inline;">
+                                <div ng-if="topic==2" style="display: inline;">
+                                    <select ng-model="fltr.status" class="form-control" style="width: 100px;display: inline;">
+                                        <option value="">Status</option>
+                                        <option value="1">RFE</option>
+                                        <option value="2">RFE Response Sent</option>
+                                        <option value="3">Received</option>
+                                        <option value="4">Approved</option>
+                                        <option value="5">Name Was Updated</option>
+                                        <option value="6">Other</option>
+                                    </select>
+                                    <select ng-model="fltr.center" class="form-control" style="width: 80px;display: inline;">
+                                        <option value="">Center</option>
+                                        <option value="EAC">EAC</option>
+                                        <option value="WAC">WAC</option>
+                                    </select>
+                                    <input type="text" placeholder="Series" class="form-control" 
+                                    ng-model="fltr.series" style="width: 70px;display: inline;">
+                                </div>
+                                <div ng-if="topic > 2" style="display: inline;">
+                                    <input type="text" readonly class="form-control" 
+                                    ng-model="cmt.temp" style="width: 250px;display: inline;">
+                                </div>
+
+                                <button class="btn btn-primary" style="width: 80px;height:32px;margin-top:-2px;display: inline;" type="submit" ng-click="filtercomments(page)" ng-disabled="form2
+                            .$invalid">Search</button></td>
+                        </tr>
+                    </table>
+                </form>
+            </div>
+            <div ng-hide="cset.cmts.length > 0 || !cmtloaded">
+                <span ng-show="fltrmode">No results found. Please try changing search citeria.</span>
+                <span ng-hide="fltrmode">No comments found for this page.</span>
+            </div>
+            <div ng-show="cset.cmts.length > 0" style="max-width: 600px; padding-bottom: 20px;">
+                <table width=100% style="margin-bottom: 10px;">
+                    <tr>
+                        <td style="font-size: 14px;" width=250>
+                            Messages {{(page-1)*sz}} - {{(page-1)*sz + cset.cmts.length}} (of {{cset.total}})
+                        </td>
+                        <td width=150>
+                            <img ng-show="cmtloaded" src="tracker/img/refresh.png" width="25" ng-click="loadcomments(1)" style="cursor: pointer;">
+                            <img ng-hide="cmtloaded" src="tracker/img/refresh.gif" width="25">
+                        </td>
+                        <td align="right" style="font-size: 13px;">
+                            <a ng-show="page > 1" ng-click="loadcomments(page-1)">Recent</a>&nbsp;&nbsp;
+                            <a ng-show="page < (cset.total/sz)" ng-click="loadcomments(page+1)">Older</a>
+                        </td>
+                    </tr>
+                </table>
+                <div ng-repeat="c in cset.cmts" ng-class="c.type == 1 ? 'cmt cmt1' : c.owner ? 'cmt cmt2' : 'cmt'">
+                    <div ng-class="c.type == 1 ? 'stbar stbar1' : c.owner ? 'stbar stbar2' : 'stbar'">
+                        <table width="100%">
+                            <tr style="font-size: 12px;">
+                                <td width="650" class="user">
+                                    {{ c.name }}&nbsp;
+                                    <span style="color:#68a;">{{ c.center }}{{ c.series }}</span>&nbsp;
+                                    <span style="color:#a86;">{{ statusopts [c.status] }}</span>&nbsp;
+                                    <span style="color:#448;">{{ c.county }}</span>&nbsp;
+                                    <span style="color:#484;">{{ c.ad }}</span>&nbsp;
+                                    <span style="color:#844;">{{ c.pp }}</span>&nbsp;
+                                    <span style="color:#777;">{{ c.city }}</span>
+
+                                </td>
+                                <td width="40" align="right">
+                                    <span style="color:#04c;cursor: pointer;" ng-click="replycmt(c)">reply</span>
+                                </td>
+                                <td width="140" align="right">
+                                    <div ng-show="c.owner">
+                                        <span style="color:#04c;cursor: pointer;" ng-hide="editmode || c.topic == 0" ng-click="editmode=true">edit</span>
+                                        <span style="color:#00f;cursor: pointer;" ng-show="editmode" ng-click="editcmt(c)">save</span>&nbsp;&nbsp;
+                                        <span style="color:#00f;cursor: pointer;" ng-show="editmode" ng-click="editmode=false">cancel</span>&nbsp;&nbsp;
+                                        <span style="color:#c40;cursor: pointer;" ng-hide="editmode || c.topic == 0" ng-click="rmcmt(c)">del</span>
+                                    </div>
+                                    <div ng-hide="c.owner || !uadmin || c.type == 1">
+                                        <span style="color:#aaa;cursor: pointer;" ng-hide="editmode" ng-click="modcmt(c)">mod</span>
+                                    </div>
+                                </td>
+                                <td width="60" align="right">
+                                    {{ c.votes }}<a ng-click="upvote(c)"><img style="margin-top: -5px;" src="tracker/img/upvote.png" width="18"></a>
+                                </td>
+                                <td width="80" align="right" style="color:#842;" title="{{ c.cmt_dt }} GMT">
+                                    {{ c.cmt_dt | timeago }}
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div style="padding: 6px;">
+                        <div style="border-left: solid 2px #46e;  padding: 4px;background-color: #f4f4f4;border-radius: 2px;" ng-show="c.qtxt"><code><span style="color: blue;">{{c.qname}}: </span>{{c.topic == 0 ? '...' : c.qtxt}}</code>
+                        </div>
+                        <code ng-hide="editmode">{{ c.topic == 0 ? '[deleted]' : c.txt}}</code>
+                        <textarea ng-show="editmode" class="form-control" ng-model="c.txt"></textarea>
+                    </div>
+                </div>
+                <div style="font-size: 13px;text-align: right">
+                    <a ng-show="page > 1" ng-click="loadcomments(page-1)">Recent</a>&nbsp;&nbsp;
+                    <a ng-show="page < (cset.total/sz)" ng-click="loadcomments(page+1)">Older</a>
+                </div>
+                <p>&nbsp;<br>
+                <p>&nbsp;<br>
+            </div>
+
+
+
+            
+        </div>
+<!--     <cmtvcase topic=2  ng-if="cmtref"></cmtvcase> -->
+
+
+    </div> 
+
+</div>
+    <a id="bottom"></a> &nbsp;
+
